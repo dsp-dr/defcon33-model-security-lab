@@ -1,1 +1,54 @@
-.training
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+
+# Editor
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Model files (potentially dangerous)
+*.pkl
+*.pickle
+*.pth
+*.pt
+
+# Safe model formats
+!*.safetensors
+!*.gguf
+!*.ggml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Analysis outputs
+analysis/*.json
+extracted/*.txt
+.training/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Presentation materials
+presentation/
+*.mp4
+*Loading Models, Launching Shells*
+
+# Git submodules
+submodules/nanoGPT/
+
+# Temp files
+generate-training-data.sh~
+SETUP.org

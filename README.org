@@ -1,0 +1,216 @@
+#+TITLE: DEF CON 33 AI/ML Model Security Lab
+#+AUTHOR: Security Research Team
+#+DATE: 2025-08-07
+
+* Overview
+
+This lab demonstrates critical security vulnerabilities in AI/ML model files based on research presented at DEF CON 33. Participants will learn about attack vectors, detection methods, and secure alternatives for model serialization.
+
+* Key Presentations Covered
+
+** Cyrus Parzian - Loading Models, Launching Shells
+Demonstrates how AI file formats can be abused for arbitrary code execution, focusing on pickle deserialization vulnerabilities in PyTorch and other ML frameworks.
+
+** Ji'an Zhou & Lishuo Song - Hidden Perils of TorchScript Engine
+Unveils security risks in PyTorch's JIT compilation engine, showing how scripted models can contain embedded code.
+
+** Ben Nassi et al - Invoking Gemini with Google Calendar
+Explores novel attack vectors for LLM manipulation through seemingly benign interfaces.
+
+* Lab Structure
+
+** /experiments/
+Contains 5 comprehensive security experiments:
+- 001-pickle-security-analysis: Pickle deserialization vulnerabilities
+- 002-torch-jit-exploitation: TorchScript security risks
+- 003-onnx-injection: ONNX format security assessment
+- 004-model-poisoning: Statistical detection of backdoors
+- 005-promptmap-llm-security: Integrated LLM attack framework
+
+** /src/
+Core analysis tools:
+- extract_pdf_text.py: Process DEF CON presentations
+- analyze_ai_attacks.py: Extract attack patterns from texts
+- test_model_security.py: Demonstrate vulnerabilities
+- scan_model.py: Security scanner for model files
+
+** /analysis/
+Results and findings from security analysis
+
+** /models/
+Test models for security experiments
+
+* Key Security Findings
+
+** Model File Vulnerabilities
+
+*** Serialization Attacks
+- Pickle files enable arbitrary code execution via __reduce__ method
+- 70%+ of ML models use unsafe pickle format
+- Standard AV/EDR tools miss these threats
+- Supply chain attacks via model repositories are practical
+
+*** Format Risk Assessment
+| Format | Risk Level | Code Execution | Recommendation |
+|--------+-----------+----------------+-----------------|
+| .pkl | CRITICAL | Yes | Never use |
+| .pt/.pth | HIGH | Yes (pickle) | Use weights_only=True |
+| ONNX | LOW | Possible | Validate operators |
+| SafeTensors | NONE | No | Recommended |
+| GGUF/GGML | NONE | No | Recommended |
+
+** Attack Vectors Discovered
+
+*** Initial Access
+- Malicious model upload to repositories
+- Supply chain compromise
+- Model repository poisoning
+
+*** Execution Methods
+- Pickle deserialization RCE
+- TorchScript exploitation
+- ONNX runtime abuse
+- Custom operator injection
+
+*** Persistence Techniques
+- Model checkpoint backdoors
+- Training pipeline injection
+- Gradient poisoning
+- Weight manipulation
+
+** Combined Attack Scenarios
+Integration with PromptMap2 reveals multi-vector attacks:
+- Model-triggered prompt injection
+- Prompt-triggered model loading
+- Supply chain prompt poisoning
+- Recursive exploit chains
+
+* Security Best Practices
+
+** Immediate Actions
+1. *NEVER* load untrusted pickle files
+2. Use torch.load() with weights_only=True
+3. Convert models to SafeTensors or GGUF format
+4. Verify SHA256 hashes before loading
+5. Implement restricted unpicklers
+
+** Defensive Measures
+- Run model loading in sandboxed environments
+- Scan models with security tools before use
+- Monitor for unexpected network connections
+- Implement runtime integrity verification
+- Use cryptographic model signing
+
+** Safe Model Formats
+- *SafeTensors*: Designed for secure tensor serialization by Hugging Face
+- *GGUF/GGML*: Binary formats without code execution capability
+- *ONNX*: Safe with proper operator validation
+- *JSON weights*: Simple but limited to basic types
+
+* Running the Lab
+
+** Prerequisites
+- Python 3.7+
+- PyTorch (for demonstrations)
+- Basic understanding of ML model formats
+
+** Quick Start
+#+BEGIN_EXAMPLE
+# Run all security experiments
+for exp in experiments/*/run_experiment.sh; do
+    bash "$exp"
+done
+
+# Scan a model file
+python src/scan_model.py your_model.pkl
+
+# Test model security
+python src/test_model_security.py
+#+END_EXAMPLE
+
+** Individual Experiments
+Each experiment directory contains:
+- README.md with detailed instructions
+- Python scripts for analysis
+- Test model generators
+- Security scanners
+
+* MITRE ATT&CK Style Matrix for AI/ML
+
+** Initial Access
+- Malicious Model Upload
+- Supply Chain Compromise
+- Model Repository Poisoning
+
+** Execution
+- Pickle Deserialization
+- TorchScript Exploitation
+- ONNX Runtime Abuse
+
+** Persistence
+- Model Checkpoint Backdoor
+- Training Pipeline Injection
+- Gradient Poisoning
+
+** Defense Evasion
+- Model Obfuscation
+- Adversarial Perturbations
+- Steganographic Weights
+
+** Exfiltration
+- Model Inversion
+- Membership Inference
+- Training Data Extraction
+
+* Tools and Resources
+
+** Security Tools Developed
+- Pickle file scanner with opcode analysis
+- TorchScript ZIP structure analyzer
+- ONNX operator validator
+- Statistical weight anomaly detector
+- PromptMap integration framework
+
+** External Resources
+- [[https://github.com/utkusen/promptmap][PromptMap2]] - Automated prompt injection testing
+- [[https://github.com/huggingface/safetensors][SafeTensors]] - Secure tensor serialization
+- [[https://github.com/trailofbits/fickling][Fickling]] - Python pickle security scanner
+- [[https://defcon.org][DEF CON 33]] - Original research presentations
+
+* Future Research Directions
+
+- Automated model security scanning at scale
+- Cryptographic model signing standards
+- Secure model distribution protocols
+- Runtime model integrity verification
+- Federated learning security
+- Differential privacy in model training
+- Adversarial robustness testing
+
+* Contributing
+
+We welcome contributions focusing on:
+- Additional attack vector research
+- Defensive tool development
+- Security testing frameworks
+- Documentation improvements
+
+Please ensure all contributions follow responsible disclosure practices.
+
+* Acknowledgments
+
+This lab is based on groundbreaking research presented at DEF CON 33. Special thanks to:
+- Cyrus Parzian for pickle vulnerability research
+- Ji'an Zhou & Lishuo Song for TorchScript analysis
+- Utku Sen for PromptMap2 framework
+- The DEF CON community for advancing AI/ML security
+
+* License
+
+This educational material is provided for security research and defensive purposes only. Users are responsible for ensuring compliance with applicable laws and ethical guidelines.
+
+* Contact
+
+For security concerns or research collaboration:
+- GitHub Issues: [[https://github.com/dsp-dr/defcon33-model-security-lab/issues]]
+- Security Research: Follow responsible disclosure practices
