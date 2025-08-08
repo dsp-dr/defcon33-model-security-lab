@@ -1,0 +1,33 @@
+Context:
+PyTorch JIT (TorchScript) models can contain embedded code through scripted functions,
+creating a code execution vector separate from pickle vulnerabilities.
+
+Issues Addressed:
+- Scripted models can contain arbitrary Python code
+- ZIP-based format can include .py files
+- Custom operators may have side effects
+- Traced vs scripted security differences
+
+Key Findings:
+- Scripted models pose higher risk than traced
+- TorchScript ZIPs can contain Python source files
+- torch.jit.load with strict=False helps but doesn't eliminate risk
+- Many users unaware of JIT security implications
+
+Follow-up Experiments:
+- Compare with ONNX security model
+- Test custom operator exploitation
+- Analyze real-world TorchScript models
+- Develop automated scanning tools
+
+Testing:
+Run jit_analyzer.py to analyze TorchScript models.
+Creates test models demonstrating traced vs scripted differences.
+
+Dependencies:
+- PyTorch 1.9+
+- Python zipfile module (standard library)
+
+Related CVEs:
+- No specific CVE yet, but similar to pickle issues
+- Part of broader ML model security concerns
