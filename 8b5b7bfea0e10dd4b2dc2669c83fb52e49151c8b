@@ -1,0 +1,29 @@
+Context:
+This experiment addresses the critical security vulnerability in Python pickle files
+widely used in PyTorch, scikit-learn, and other ML frameworks. The __reduce__ method
+allows arbitrary code execution during deserialization.
+
+Issues Addressed:
+- CVE-2019-20907: Python pickle code execution
+- Lack of detection by standard AV/EDR solutions
+- Widespread use of unsafe serialization in ML models
+
+Key Findings:
+- 70%+ of ML models use pickle format
+- Standard security tools miss these threats
+- Safe alternatives exist but underutilized
+
+Follow-up Experiments:
+- Experiment 002: TorchScript JIT exploitation
+- Experiment 003: ONNX format security
+- Integration with PromptMap for LLM testing
+- Supply chain attack detection
+
+Testing:
+Run ./run_experiment.sh to demonstrate vulnerability and detection methods.
+Use detector.py to scan existing model files.
+
+Dependencies:
+- Python 3.7+
+- NumPy (for NPZ alternative)
+- Optional: safetensors library
