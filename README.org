@@ -2,6 +2,11 @@
 #+AUTHOR: Security Research Team
 #+DATE: 2025-08-07
 
+[[https://img.shields.io/badge/Status-Experimental-orange.svg]]
+[[https://img.shields.io/badge/DEF%20CON-33-red.svg]]
+[[https://img.shields.io/badge/License-Educational-blue.svg]]
+[[https://img.shields.io/badge/Python-3.7%2B-green.svg]]
+
 * Overview
 
 This lab demonstrates critical security vulnerabilities in AI/ML model files based on research presented at DEF CON 33. Participants will learn about attack vectors, detection methods, and secure alternatives for model serialization.
@@ -19,25 +24,25 @@ Explores novel attack vectors for LLM manipulation through seemingly benign inte
 
 * Lab Structure
 
-** /experiments/
+** [[file:experiments/][/experiments/]]
 Contains 5 comprehensive security experiments:
-- 001-pickle-security-analysis: Pickle deserialization vulnerabilities
-- 002-torch-jit-exploitation: TorchScript security risks
-- 003-onnx-injection: ONNX format security assessment
-- 004-model-poisoning: Statistical detection of backdoors
-- 005-promptmap-llm-security: Integrated LLM attack framework
+- [[file:experiments/001-pickle-security-analysis/][001-pickle-security-analysis]]: Pickle deserialization vulnerabilities
+- [[file:experiments/002-torch-jit-exploitation/][002-torch-jit-exploitation]]: TorchScript security risks
+- [[file:experiments/003-onnx-injection/][003-onnx-injection]]: ONNX format security assessment
+- [[file:experiments/004-model-poisoning/][004-model-poisoning]]: Statistical detection of backdoors
+- [[file:experiments/005-promptmap-llm-security/][005-promptmap-llm-security]]: Integrated LLM attack framework
 
-** /src/
+** [[file:src/][/src/]]
 Core analysis tools:
-- extract_pdf_text.py: Process DEF CON presentations
-- analyze_ai_attacks.py: Extract attack patterns from texts
-- test_model_security.py: Demonstrate vulnerabilities
-- scan_model.py: Security scanner for model files
+- [[file:src/extract_pdf_text.py][extract_pdf_text.py]]: Process DEF CON presentations
+- [[file:src/analyze_ai_attacks.py][analyze_ai_attacks.py]]: Extract attack patterns from texts
+- [[file:src/test_model_security.py][test_model_security.py]]: Demonstrate vulnerabilities
+- [[file:src/scan_model.py][scan_model.py]]: Security scanner for model files
 
-** /analysis/
+** [[file:analysis/][/analysis/]]
 Results and findings from security analysis
 
-** /models/
+** [[file:models/][/models/]]
 Test models for security experiments
 
 * Key Security Findings
@@ -45,7 +50,7 @@ Test models for security experiments
 ** Model File Vulnerabilities
 
 *** Serialization Attacks
-- Pickle files enable arbitrary code execution via __reduce__ method
+- Pickle files enable arbitrary code execution via ~__reduce__~ method
 - 70%+ of ML models use unsafe pickle format
 - Standard AV/EDR tools miss these threats
 - Supply chain attacks via model repositories are practical
@@ -53,11 +58,11 @@ Test models for security experiments
 *** Format Risk Assessment
 | Format | Risk Level | Code Execution | Recommendation |
 |--------+-----------+----------------+-----------------|
-| .pkl | CRITICAL | Yes | Never use |
-| .pt/.pth | HIGH | Yes (pickle) | Use weights_only=True |
-| ONNX | LOW | Possible | Validate operators |
-| SafeTensors | NONE | No | Recommended |
-| GGUF/GGML | NONE | No | Recommended |
+| ~.pkl~ | CRITICAL | Yes | Never use |
+| ~.pt/.pth~ | HIGH | Yes (pickle) | Use ~weights_only=True~ |
+| ~ONNX~ | LOW | Possible | Validate operators |
+| ~SafeTensors~ | NONE | No | Recommended |
+| ~GGUF/GGML~ | NONE | No | Recommended |
 
 ** Attack Vectors Discovered
 
@@ -89,7 +94,7 @@ Integration with PromptMap2 reveals multi-vector attacks:
 
 ** Immediate Actions
 1. *NEVER* load untrusted pickle files
-2. Use torch.load() with weights_only=True
+2. Use ~torch.load()~ with ~weights_only=True~
 3. Convert models to SafeTensors or GGUF format
 4. Verify SHA256 hashes before loading
 5. Implement restricted unpicklers
@@ -115,7 +120,10 @@ Integration with PromptMap2 reveals multi-vector attacks:
 - Basic understanding of ML model formats
 
 ** Quick Start
-#+BEGIN_EXAMPLE
+#+BEGIN_SRC bash
+# Run setup to create directories
+bash setup.sh
+
 # Run all security experiments
 for exp in experiments/*/run_experiment.sh; do
     bash "$exp"
@@ -126,14 +134,21 @@ python src/scan_model.py your_model.pkl
 
 # Test model security
 python src/test_model_security.py
-#+END_EXAMPLE
+#+END_SRC
 
 ** Individual Experiments
 Each experiment directory contains:
-- README.md with detailed instructions
+- ~README.md~ with detailed instructions
 - Python scripts for analysis
 - Test model generators
 - Security scanners
+
+Quick access to experiment runners:
+- [[file:experiments/001-pickle-security-analysis/run_experiment.sh][Pickle Security]] - Test pickle vulnerabilities
+- [[file:experiments/002-torch-jit-exploitation/jit_analyzer.py][JIT Analysis]] - Analyze TorchScript models
+- [[file:experiments/003-onnx-injection/onnx_scanner.py][ONNX Scanner]] - Scan ONNX models
+- [[file:experiments/004-model-poisoning/poison_detector.py][Poison Detector]] - Detect model backdoors
+- [[file:experiments/005-promptmap-llm-security/integrated_attacks.py][Integrated Attacks]] - Test combined vectors
 
 * MITRE ATT&CK Style Matrix for AI/ML
 
@@ -165,11 +180,11 @@ Each experiment directory contains:
 * Tools and Resources
 
 ** Security Tools Developed
-- Pickle file scanner with opcode analysis
-- TorchScript ZIP structure analyzer
-- ONNX operator validator
-- Statistical weight anomaly detector
-- PromptMap integration framework
+- [[file:experiments/001-pickle-security-analysis/detector.py][Pickle file scanner]] with opcode analysis
+- [[file:experiments/002-torch-jit-exploitation/jit_analyzer.py][TorchScript ZIP structure analyzer]]
+- [[file:experiments/003-onnx-injection/onnx_scanner.py][ONNX operator validator]]
+- [[file:experiments/004-model-poisoning/poison_detector.py][Statistical weight anomaly detector]]
+- [[file:experiments/005-promptmap-llm-security/integrated_attacks.py][PromptMap integration framework]]
 
 ** External Resources
 - [[https://github.com/utkusen/promptmap][PromptMap2]] - Automated prompt injection testing
