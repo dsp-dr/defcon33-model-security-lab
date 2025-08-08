@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.eggs/
+
+# Presentation materials
+presentation/
+*.mp4
+*.pdf
+*Loading Models, Launching Shells*
+
+# nanoGPT specific
+out-*/
+*.bin
+*.pt
+*.pth
+wandb/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

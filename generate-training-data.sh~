@@ -1,0 +1,1 @@
+TRAINING_DIR=$(mktemp -d) && find defcon33/.mirror/*.pdf -type f -exec pdf_text {} \; > $TRAINING_DIR/defcon33-presentations.txt ;
