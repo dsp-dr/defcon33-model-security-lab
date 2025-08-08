@@ -1,0 +1,1 @@
+Context: ONNX format analysis for security vulnerabilities. While safer than pickle, still has attack vectors. Issues: Custom operators can be malicious, metadata fields may contain scripts, protobuf deserialization risks. Follow-up: Test ONNX runtime exploits, analyze operator implementations, develop ONNX-specific security tools.
